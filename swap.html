@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StableMiner Swap Desk</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar reveal" style="--delay: 0s">
+        <div class="brand">
+          <div class="brand-mark">SM</div>
+          <div>
+            <div class="brand-title">Swap Desk</div>
+            <div class="brand-subtitle">DEXY USE minting from your node wallet</div>
+          </div>
+        </div>
+        <div class="top-actions">
+          <div class="chip" id="swapModeChip">Swap view</div>
+          <a class="ghost button-link" href="index.html">Dashboard</a>
+        </div>
+      </header>
+
+      <section class="hero reveal" style="--delay: 0.1s">
+        <div class="hero-copy">
+          <h1>Mint USE directly from mined ERG.</h1>
+          <p>
+            StableMiner now routes ERG from your local node wallet into Dexy stablecoin
+            minting, respecting on-chain free and arbitrage constraints.
+          </p>
+          <div class="hero-actions">
+            <button class="ghost" type="button" disabled>Automation (soon)</button>
+            <button class="ghost" type="button" disabled>Vault routing (soon)</button>
+          </div>
+        </div>
+        <div class="hero-rail">
+          <div class="rail-card">
+            <div class="rail-label">Mint flow</div>
+            <div class="rail-step">1 Check bank + LP state</div>
+            <div class="rail-step">2 Mint USE via node wallet</div>
+            <div class="rail-step">3 Route USE holdings</div>
+          </div>
+          <div class="rail-card">
+            <div class="rail-label">Status</div>
+            <div class="status">
+              <span class="status-dot" id="dexyStatusDot"></span>
+              <span id="dexyStatusLabel">Offline</span>
+            </div>
+            <div class="rail-note" id="dexyStatusNote">
+              Connect the node wallet to load Dexy state.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid reveal" style="--delay: 0.2s">
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>USE Minting</h2>
+              <p>Swap ERG into USE using the Dexy bank contracts.</p>
+            </div>
+            <div class="status">
+              <span class="status-dot" id="mintStatusDot"></span>
+              <span id="mintStatusLabel">Idle</span>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="field-grid">
+              <label class="field span-2">
+                <span>ERG to swap</span>
+                <input id="swapErgAmount" type="text" placeholder="1.250" />
+              </label>
+              <label class="field">
+                <span>Mint mode</span>
+                <div class="segmented mode-select" role="tablist" aria-label="Mint mode">
+                  <button class="segment active" type="button" data-mode="auto">Auto</button>
+                  <button class="segment" type="button" data-mode="free">Free mint</button>
+                  <button class="segment" type="button" data-mode="arbitrage">Arb mint</button>
+                </div>
+              </label>
+            </div>
+            <div class="actions">
+              <button class="primary" id="swapPreview" type="button">Preview mint</button>
+              <button class="ghost" id="swapMint" type="button" disabled>Mint USE</button>
+            </div>
+            <div class="divider"></div>
+            <div class="meta-grid quote-grid">
+              <div class="meta">
+                <span>Minted USE</span>
+                <span id="quoteUse">--</span>
+              </div>
+              <div class="meta">
+                <span>ERG to bank</span>
+                <span id="quoteBank">--</span>
+              </div>
+              <div class="meta">
+                <span>ERG to buyback</span>
+                <span id="quoteBuyback">--</span>
+              </div>
+              <div class="meta">
+                <span>Fee</span>
+                <span id="quoteFee">--</span>
+              </div>
+              <div class="meta">
+                <span>Total spend</span>
+                <span id="quoteTotal">--</span>
+              </div>
+              <div class="meta">
+                <span>Mint path</span>
+                <span id="quoteMode">--</span>
+              </div>
+            </div>
+            <div class="note" id="swapNote">
+              Preview the mint to confirm availability and review the transaction before broadcasting.
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Protocol Telemetry</h2>
+              <p>Live Dexy pricing and mint constraints.</p>
+            </div>
+            <div class="status">
+              <span class="status-dot" id="telemetryDot"></span>
+              <span id="telemetryLabel">Waiting</span>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="meta-grid">
+              <div class="meta">
+                <span>Wallet</span>
+                <span id="dexyWallet">--</span>
+              </div>
+              <div class="meta">
+                <span>Network</span>
+                <span id="dexyNetwork">--</span>
+              </div>
+              <div class="meta">
+                <span>Node height</span>
+                <span id="dexyHeight">--</span>
+              </div>
+              <div class="meta">
+                <span>Oracle price</span>
+                <span id="dexyOracle">--</span>
+              </div>
+              <div class="meta">
+                <span>LP price</span>
+                <span id="dexyLpPrice">--</span>
+              </div>
+              <div class="meta">
+                <span>Free mint</span>
+                <span id="dexyFreeStatus">--</span>
+              </div>
+              <div class="meta">
+                <span>Free available</span>
+                <span id="dexyFreeAvailable">--</span>
+              </div>
+              <div class="meta">
+                <span>Arb mint</span>
+                <span id="dexyArbStatus">--</span>
+              </div>
+              <div class="meta">
+                <span>Arb available</span>
+                <span id="dexyArbAvailable">--</span>
+              </div>
+            </div>
+            <div class="note" id="telemetryNote">
+              Dexy metrics refresh every 15 seconds when the wallet is connected.
+            </div>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <div class="toast" id="swapToast" aria-live="polite"></div>
+
+    <div class="modal-backdrop" id="reviewModal" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="reviewTitle">
+        <div class="modal-header">
+          <div>
+            <div class="modal-title" id="reviewTitle">Review mint</div>
+            <div class="modal-subtitle">Confirm the transaction before broadcasting.</div>
+          </div>
+          <button class="ghost" type="button" data-modal-close>Close</button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-grid">
+            <div class="meta">
+              <span>Mode</span>
+              <span id="reviewMode">--</span>
+            </div>
+            <div class="meta">
+              <span>ERG input</span>
+              <span id="reviewErgInput">--</span>
+            </div>
+            <div class="meta">
+              <span>Minted USE</span>
+              <span id="reviewUse">--</span>
+            </div>
+            <div class="meta">
+              <span>ERG to bank</span>
+              <span id="reviewBank">--</span>
+            </div>
+            <div class="meta">
+              <span>ERG to buyback</span>
+              <span id="reviewBuyback">--</span>
+            </div>
+            <div class="meta">
+              <span>Fee</span>
+              <span id="reviewFee">--</span>
+            </div>
+            <div class="meta">
+              <span>Total spend</span>
+              <span id="reviewTotal">--</span>
+            </div>
+            <div class="meta">
+              <span>Unused ERG</span>
+              <span id="reviewUnused">--</span>
+            </div>
+            <div class="meta">
+              <span>Network</span>
+              <span id="reviewNetwork">--</span>
+            </div>
+            <div class="meta wide">
+              <span>Wallet</span>
+              <span class="mono" id="reviewWallet">--</span>
+            </div>
+          </div>
+          <div class="note" id="reviewNote">
+            Outputs will update the Dexy bank, buyback, and mint boxes before sending USE to
+            your wallet.
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="ghost" type="button" data-modal-close>Cancel</button>
+          <button class="primary" id="reviewConfirm" type="button">Submit mint</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="successModal" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+        <div class="modal-header">
+          <div>
+            <div class="modal-title" id="successTitle">Mint broadcasted</div>
+            <div class="modal-subtitle">Transaction submitted to the network.</div>
+          </div>
+          <button class="ghost" type="button" data-modal-close>Close</button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-grid">
+            <div class="meta wide">
+              <span>Transaction ID</span>
+              <span class="mono" id="successTxId">--</span>
+            </div>
+            <div class="meta">
+              <span>Explorer</span>
+              <a class="modal-link" id="successExplorer" href="#" target="_blank" rel="noopener">
+                View on Explorer
+              </a>
+            </div>
+            <div class="meta">
+              <span>Mode</span>
+              <span id="successMode">--</span>
+            </div>
+            <div class="meta">
+              <span>ERG input</span>
+              <span id="successInput">--</span>
+            </div>
+            <div class="meta">
+              <span>Minted USE</span>
+              <span id="successUse">--</span>
+            </div>
+            <div class="meta">
+              <span>Total spend</span>
+              <span id="successTotal">--</span>
+            </div>
+          </div>
+          <div class="note" id="successNote">
+            Broadcasts can take a few minutes to confirm. Track the transaction in the explorer.
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="primary" type="button" data-modal-close>Done</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="bridge.js"></script>
+    <script src="swap.js"></script>
+  </body>
+</html>

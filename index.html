@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StableMiner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar reveal" style="--delay: 0s">
+        <div class="brand">
+          <div class="brand-mark">SM</div>
+          <div>
+            <div class="brand-title">StableMiner</div>
+            <div class="brand-subtitle">Ergo Node Wallet + Rigel Miner control desk</div>
+          </div>
+        </div>
+        <div class="top-actions">
+          <div class="chip" id="appModeChip">Local UI</div>
+          <a class="ghost button-link" href="swap.html">Swap desk</a>
+          <button class="ghost" id="openConfig" type="button">Preferences</button>
+        </div>
+      </header>
+
+      <section class="hero reveal" style="--delay: 0.1s">
+        <div class="hero-copy">
+          <h1>Mine ERG with a wallet-first workflow.</h1>
+          <p>
+            Connect the Ergo Node wallet, route Rigel Miner payouts, and prepare for inline swaps
+            to USE stablecoins.
+          </p>
+          <div class="hero-actions">
+            <button class="primary" id="heroConnect" type="button">Connect wallet</button>
+            <button class="ghost" id="heroStartMiner" type="button">Start miner</button>
+          </div>
+        </div>
+        <div class="hero-rail">
+          <div class="rail-card">
+            <div class="rail-label">Pipeline</div>
+            <div class="rail-step">1 Wallet link</div>
+            <div class="rail-step">2 Miner orchestration</div>
+            <div class="rail-step muted">3 Auto swap (soon)</div>
+          </div>
+          <div class="rail-card">
+            <div class="rail-label">Mode</div>
+            <div class="segmented" role="tablist" aria-label="Mining mode">
+              <button class="segment active" type="button" data-mode="pool">Pool</button>
+              <button class="segment" type="button" data-mode="solo">Solo</button>
+            </div>
+            <div class="rail-note" id="modeNote">Pooling with shared payout.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid reveal" style="--delay: 0.2s">
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Ergo Node Wallet</h2>
+              <p>Connect to a local Ergo node wallet for payouts.</p>
+            </div>
+            <div class="status">
+              <span class="status-dot" id="walletDot"></span>
+              <span id="walletStatus">Offline</span>
+              <span class="chip subtle" id="walletModeChip" hidden>API key required</span>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="field-grid">
+              <label class="field">
+                <span>Endpoint</span>
+                <input id="walletEndpoint" type="text" placeholder="http://127.0.0.1:9053" />
+              </label>
+              <label class="field">
+                <span>API key</span>
+                <input id="walletToken" type="password" placeholder="required for wallet access" />
+              </label>
+            </div>
+            <div class="actions">
+              <button class="primary" id="walletConnect" type="button">Connect</button>
+              <button class="ghost" id="walletDisconnect" type="button" disabled>Disconnect</button>
+              <button class="ghost" id="walletScan" type="button">Scan local node</button>
+            </div>
+            <div class="divider"></div>
+            <div class="meta address-line">
+              <span>Active address</span>
+              <span class="mono" id="walletAddress">Not linked</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta">
+                <span>ERG balance</span>
+                <span id="walletBalance">--</span>
+              </div>
+              <div class="meta">
+                <span>Token count</span>
+                <span id="walletTokens">--</span>
+              </div>
+              <div class="meta">
+                <span>Network</span>
+                <span id="walletNetwork">--</span>
+              </div>
+            </div>
+            <div class="note" id="walletNote">
+              Start your local Ergo node and provide its API key to connect.
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Rigel Miner</h2>
+              <p>Profile, pool, and runtime controls.</p>
+            </div>
+            <div class="status">
+              <span class="status-dot" id="minerDot"></span>
+              <span id="minerStatus">Idle</span>
+              <span class="chip subtle" id="minerModeChip" hidden>Demo</span>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="field-grid">
+              <label class="field">
+                <span>Rigel path</span>
+                <input id="minerPath" type="text" placeholder="C:\\Miner\\rigel.exe" />
+              </label>
+              <label class="field">
+                <span>Pool URL</span>
+                <input id="minerPool" type="text" placeholder="stratum+tcp://erg.pool:3333" />
+              </label>
+              <label class="field">
+                <span>Worker name</span>
+                <input id="minerWorker" type="text" placeholder="rigel-rig-01" />
+              </label>
+              <label class="field">
+                <span>API bind</span>
+                <input id="minerApiBind" type="text" placeholder="127.0.0.1:5000" />
+              </label>
+              <label class="field">
+                <span>Payout address</span>
+                <input id="minerAddress" type="text" placeholder="Link wallet to fill" />
+              </label>
+              <label class="field span-2">
+                <span>Extra args</span>
+                <input id="minerArgs" type="text" placeholder="--api-bind 0.0.0.0:4048" />
+              </label>
+            </div>
+            <div class="actions">
+              <button class="primary" id="minerStart" type="button">Start</button>
+              <button class="ghost" id="minerStop" type="button" disabled>Stop</button>
+            </div>
+            <div class="divider"></div>
+            <div class="meta-grid">
+              <div class="meta">
+                <span>Hashrate</span>
+                <span id="minerHashrate">--</span>
+              </div>
+              <div class="meta">
+                <span>Power</span>
+                <span id="minerPower">--</span>
+              </div>
+              <div class="meta">
+                <span>Accepted</span>
+                <span id="minerShares">--</span>
+              </div>
+              <div class="meta">
+                <span>Uptime</span>
+                <span id="minerUptime">--</span>
+              </div>
+            </div>
+            <div class="note" id="minerNote">Linking to the wallet auto-fills payout address.</div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Build & Deploy</h2>
+              <p>Install Rigel locally and track task logs.</p>
+            </div>
+            <div class="status">
+              <span class="status-dot" id="taskDot"></span>
+              <span id="taskStatus">Idle</span>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="build-section">
+              <div class="build-title">Rigel Miner</div>
+              <div class="actions">
+                <button class="ghost" id="installRigel" type="button">Download/Update Rigel</button>
+                <button class="ghost" id="useRigelPath" type="button" disabled>Use installed path</button>
+              </div>
+              <div class="note" id="rigelPathNote">No Rigel install detected yet.</div>
+            </div>
+            <div class="divider"></div>
+            <pre class="build-log" id="buildLog">No tasks yet.</pre>
+          </div>
+        </article>
+
+      </section>
+
+      <section class="footer reveal" style="--delay: 0.3s">
+        <div class="footer-card">
+          <div>
+            <div class="footer-title">Integration notes</div>
+            <div class="footer-text">
+              Run the local bridge server to connect the Ergo Node wallet and Rigel Miner. The UI
+              uses <span class="mono">bridge.js</span> to talk to <span class="mono">server.cjs</span>.
+            </div>
+          </div>
+          <button class="ghost" id="copyConfig" type="button">Export config</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="toast" id="toast" aria-live="polite"></div>
+
+    <script src="bridge.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
