@@ -64,7 +64,7 @@ The UI polls the Rigel HTTP API and tries common endpoints (`/stat`, `/stats`, `
 
 Video Demo: 
 
-
+https://github.com/user-attachments/assets/f88d6e61-82d2-4789-a177-b9ec4400387f
 
 
 Donation Address: 9eumEjApDtdixZo2r8M7d66ZxaRKmXhaT8a4fEYSr3VJztorn7g
