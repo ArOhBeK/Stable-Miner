@@ -173,9 +173,108 @@
                 <span>Arb available</span>
                 <span id="dexyArbAvailable">--</span>
               </div>
+              <div class="meta">
+                <span>ERG price (oracle)</span>
+                <span id="dexyErgOracle">--</span>
+              </div>
+              <div class="meta">
+                <span>ERG price (LP)</span>
+                <span id="dexyErgLp">--</span>
+              </div>
+              <div class="meta">
+                <span>LP vs oracle</span>
+                <span id="dexyLpDiff">--</span>
+              </div>
             </div>
             <div class="note" id="telemetryNote">
               Dexy metrics refresh every 15 seconds when the wallet is connected.
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Auto Swap</h2>
+              <p>Run automatic USE mints when your conditions are met.</p>
+            </div>
+            <div class="status">
+              <span class="status-dot" id="autoStatusDot"></span>
+              <span id="autoStatusLabel">Off</span>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="actions">
+              <button class="ghost" id="autoToggle" type="button">Enable auto swap</button>
+              <button class="ghost" id="autoCheck" type="button">Check now</button>
+            </div>
+            <div class="field-grid">
+              <label class="field">
+                <span>Auto ERG amount</span>
+                <input id="autoErgAmount" type="text" placeholder="1.0" />
+              </label>
+              <label class="field">
+                <span>Cooldown (sec)</span>
+                <input id="autoCooldown" type="number" min="30" step="10" value="300" />
+              </label>
+              <label class="field">
+                <span>LP vs oracle band %</span>
+                <input id="autoLpBand" type="number" min="0" step="0.1" value="2" />
+              </label>
+              <label class="field">
+                <span>USE target (ERG)</span>
+                <div class="field-stack">
+                  <select id="autoUseTargetOp">
+                    <option value="lte">Below</option>
+                    <option value="gte">Above</option>
+                  </select>
+                  <input id="autoUseTarget" type="number" min="0" step="0.001" placeholder="2.0" />
+                </div>
+              </label>
+              <label class="field">
+                <span>ERG target (USE)</span>
+                <div class="field-stack">
+                  <select id="autoErgTargetOp">
+                    <option value="lte">Below</option>
+                    <option value="gte">Above</option>
+                  </select>
+                  <input id="autoErgTarget" type="number" min="0" step="0.0001" placeholder="0.5000" />
+                </div>
+              </label>
+            </div>
+            <div class="auto-conditions">
+              <label class="checkbox">
+                <input id="autoFree" type="checkbox" checked />
+                <span>Mint when free mint is available</span>
+              </label>
+              <label class="checkbox">
+                <input id="autoArb" type="checkbox" checked />
+                <span>Mint when arb mint is available</span>
+              </label>
+              <label class="checkbox">
+                <input id="autoBand" type="checkbox" checked />
+                <span>Require LP price within the band</span>
+              </label>
+            </div>
+            <div class="divider"></div>
+            <div class="meta-grid">
+              <div class="meta">
+                <span>Next action</span>
+                <span id="autoNextAction">--</span>
+              </div>
+              <div class="meta">
+                <span>Last run</span>
+                <span id="autoLastRun">--</span>
+              </div>
+              <div class="meta wide">
+                <span>Last tx</span>
+                <a class="text-link mono" id="autoLastTx" href="#" target="_blank" rel="noopener">
+                  --
+                </a>
+              </div>
+            </div>
+            <div class="note" id="autoNote">
+              Auto swap checks every 15 seconds while this page is open.
             </div>
           </div>
         </article>

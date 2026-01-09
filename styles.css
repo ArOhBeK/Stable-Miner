@@ -301,6 +301,28 @@ body::after {
   box-shadow: 0 0 0 3px rgba(196, 154, 108, 0.15);
 }
 
+.field-stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.field select {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #212a36;
+  background: #0f141b;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.field select:focus {
+  outline: 1px solid var(--accent);
+  border-color: transparent;
+  box-shadow: 0 0 0 3px rgba(196, 154, 108, 0.15);
+}
 
 .bridge {
   padding: 12px;
@@ -537,6 +559,37 @@ button.wide,
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
+}
+
+.auto-conditions {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(15, 20, 27, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.checkbox {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.checkbox input {
+  accent-color: var(--accent);
+}
+
+.text-link {
+  color: var(--accent-strong);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.text-link:hover {
+  text-decoration: underline;
 }
 
 .swap-card {
