@@ -87,3 +87,10 @@ ErgoScript reference material is embedded under `context/` for local development
 - `EXPLORER_MAINNET` overrides the mainnet explorer URL for balance lookups.
 - `EXPLORER_TESTNET` overrides the testnet explorer URL.
 - `ERGO_NODE_URL` overrides the default Ergo node endpoint for scans.
+
+Video Demo: 
+
+https://github.com/user-attachments/assets/f88d6e61-82d2-4789-a177-b9ec4400387f
+
+
+Donation Address: 9eumEjApDtdixZo2r8M7d66ZxaRKmXhaT8a4fEYSr3VJztorn7g
